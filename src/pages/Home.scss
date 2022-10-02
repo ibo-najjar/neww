@@ -1,0 +1,120 @@
+.app__home {
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  grid-template-rows: 50px 1fr 50px;
+  grid-template-areas:
+    "sidenav header"
+    "sidenav main"
+    "sidenav footer";
+  height: 100vh;
+  @media screen and (max-width: 800px) {
+    display: flex;
+    max-width: 100%;
+    justify-content: center;
+  }
+}
+
+.app__header {
+  grid-area: header;
+  background-color: white;
+  display: flex;
+  @media screen and (max-width: 800px) {
+    display: none;
+  }
+}
+
+.app__footer {
+  grid-area: footer;
+  background-color: #648ca6;
+}
+
+.app__footer, .app__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+  background-color: #fff;
+  @media screen and (max-width: 800px) {
+    display: none;
+  }
+}
+
+.app__main {
+  padding: 20px 40px;
+  grid-area: main;
+  background-color: white;
+
+  
+}
+
+.search {
+  padding: 10px;
+  margin: 10px;
+  width: 50%;
+}
+
+
+.window {
+  height: 100vh;
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  background-color: aqua;
+}
+
+.search {
+  border: 3px solid #000;
+  border-radius: 5px;
+  height: 50px;
+  line-height: normal;
+  color: #282828;
+  display: block;
+  width: 50%;
+  margin: 10px 0;
+  box-sizing: border-box;
+  user-select: auto;
+  font-size: 16px;
+  padding: 0 6px;
+  padding-left: 12px;
+  &:focus{
+      border: 3px solid #5551ff;
+      transform: translateY(-2px);
+  }
+  &:hover{
+    transform: translateY(-2px);
+} 
+}
+
+.table-head {
+  height: 50px;
+  
+  
+}
+
+.btn {
+  font-size: 20px;
+  margin: 0 5px;
+  cursor: pointer;  
+}
+
+a:link { text-decoration: none; }
+
+a:visited { text-decoration: none; }
+
+a:hover { text-decoration: none; }
+
+a:active { text-decoration: none; }
+
+th {
+  svg{
+    margin: 0 10px;
+    cursor: pointer;
+    margin-bottom: -2px;
+    fill: rgba($color: #000, $alpha: 0.5);
+  }
+  :hover {
+    fill: rgba($color: #000, $alpha: 1);
+  }
+}

@@ -1,0 +1,13 @@
+body {
+  margin: 0;
+  font-family:'Cairo', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+:root {
+  --primary-color: #2d2a26;
+  --primary-color-dim: #908c8a;
+  --secondary-color: #e10600;
+  --secondary-color-dim: #f08380;
+}
