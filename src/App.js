@@ -12,7 +12,7 @@ import Orders from './pages/Orders';
 import ViewOrder from './pages/ViewOrder';
 import axios from 'axios';
 
-axios.defaults.baseURL = 'http://172.16.1.113/'
+axios.defaults.baseURL = 'http://172.20.10.10/'
 
 function App() {
   return (
