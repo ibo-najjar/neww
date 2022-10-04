@@ -12,8 +12,8 @@ import Orders from './pages/Orders';
 import ViewOrder from './pages/ViewOrder';
 import axios from 'axios';
 
-axios.defaults.baseURL = 'https://casts-server-wphs.vercel.app/'
-
+axios.defaults.baseURL = 'http://localhost:5000/'
+//https://casts-server-wphs.vercel.app/
 function App() {
   return (
     <BrowserRouter>
