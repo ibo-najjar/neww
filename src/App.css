@@ -8,4 +8,6 @@
   align-items: center;
   position: relative;
 }
-
+a, button /* &c... */ {
+  all: unset;
+}

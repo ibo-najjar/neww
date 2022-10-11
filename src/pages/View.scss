@@ -7,6 +7,7 @@
   flex: 1;
   //background-color: #f2f3f7;
 }
+
 .view-name {
   display: flex;
   align-items: center;
@@ -29,12 +30,13 @@
 }
 .view-container {
   //background-color: aqua;
+
   width: 100%;
   height: 100%;
   display: grid;
   grid-template-columns: 1fr 1.5fr;
   gap: 20px;
-  @media only screen and (max-width: 1450px) {
+  @media only screen and (max-width: 1252px) {
     display: flex;
     flex-direction: column;
   }
@@ -43,42 +45,109 @@
 .user-overview {
   box-shadow: rgba(100, 100, 111, 0.4) 0px 7px 29px 0px;
   border-radius: 10px;
-  padding: 20px;
+  padding: 10px 20px;
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 620px;
-  .modal-conatainer {
-    margin-bottom: 50px;
+  .user-overview_images-row {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.3s ease;
+    .user-overview_image-container {
+      width: 200px;
+      height: 200px;
+      margin: 10px;
+      border-radius: 10px;
+      @media screen and (max-width: 761px) {
+        width: 120px;
+        height: 120px;
+      }
+      @media screen and (max-width: 521px) {
+        width: 80px;
+        height: 80px;
+      }
 
+      &:hover {
+        transition: all 0.3s ease-in;
+        background-color: #000;
+        img {
+          opacity: 0.5;
+        }
+      }
+      img {
+        object-fit: cover;
+        border-radius: 10px;
+      }
+    }
   }
-  
 }
+
+.user-overiview_tall-image {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  transition: all 0.3s ease;
+  .user-overview_image-container {
+    width: 200px;
+    height: 420px;
+    margin: 10px;
+    border-radius: 10px;
+    @media screen and (max-width: 761px) {
+      width: 120px;
+      height: 260px;
+    }
+    @media screen and (max-width: 521px) {
+      width: 80px;
+      height: 180px;
+    }
+
+    &:hover {
+      transition: all 0.3s ease-in;
+      background-color: #000;
+      img {
+        opacity: 0.5;
+      }
+    }
+    img {
+      object-fit: cover;
+      border-radius: 10px;
+    }
+  }
+}
+.user-overview_video-container {
+  box-shadow: rgba(100, 100, 111, 0.4) 0px 7px 29px 0px;
+  border-radius: 10px;
+  padding: 10px 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .more-info {
   box-shadow: rgba(100, 100, 111, 0.4) 0px 7px 29px 0px;
   border-radius: 10px;
   padding: 10px 20px;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  
+
   .row-info {
-    
     display: flex;
     //text-align: right;
     justify-content: space-between;
     height: 40px;
-
   }
   .row-info-long {
     display: flex;
     //text-align: right;
     justify-content: space-between;
-    
   }
   #header-name {
     color: rgba($color: #000000, $alpha: 0.4);
-    //height: 20px;
+    width: 50%;
     align-self: center;
   }
   #sub-info {
@@ -92,7 +161,6 @@
       margin-right: 10px;
     }
   }
-
 
   /*.info-row {
     display: flex;
@@ -115,30 +183,36 @@
 .profile-and-name {
   display: flex;
   align-items: center;
-
 }
 .view-buttons {
-  grid-column-start: 2 span;
   //background-color: #000;
+  box-shadow: rgba(100, 100, 111, 0.4) 0px 7px 29px 0px;
+  border-radius: 10px;
+  padding: 10px 20px;
   display: flex;
   justify-content: center;
   align-items: center;
+  min-height: 160px;
   button {
     margin: 0 10px;
     display: inline-block;
     outline: 0;
     border: 0;
+    text-align: center;
     cursor: pointer;
     background: #000000;
-    color: #FFFFFF;
+    color: #ffffff;
     border-radius: 8px;
     padding: 14px 24px 16px;
     font-size: 18px;
     font-weight: 700;
     line-height: 1;
-    transition: transform 200ms,background 200ms;
-    &:hover{
-        transform: translateY(-2px);
+    transition: transform 200ms, background 200ms;
+    &:hover {
+      transform: translateY(-2px);
+    }
+    @media screen and (max-width: 521px) {
+      font-size: 14px;
     }
   }
 }

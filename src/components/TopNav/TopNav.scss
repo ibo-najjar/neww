@@ -1,9 +1,4 @@
 .topnav {
-
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
   @media screen and (min-width: 800px) {
     display: none;
   }
@@ -23,4 +18,3 @@
   background-color: #ddd;
   color: black;
 }
-

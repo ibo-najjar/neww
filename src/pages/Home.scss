@@ -16,7 +16,7 @@
 
 .app__header {
   grid-area: header;
-  background-color: white;
+
   display: flex;
   @media screen and (max-width: 800px) {
     display: none;
@@ -25,26 +25,27 @@
 
 .app__footer {
   grid-area: footer;
-  background-color: #648ca6;
 }
 
-.app__footer, .app__header {
+.app__footer,
+.app__header {
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 0 16px;
-  background-color: #fff;
+
   @media screen and (max-width: 800px) {
     display: none;
   }
 }
 
 .app__main {
-  padding: 20px 40px;
+  padding: 80px 40px;
+  @media screen and (max-width: 800px) {
+    padding-left: 0;
+    padding-right: 0;
+  }
   grid-area: main;
-  background-color: white;
-
-  
 }
 
 .search {
@@ -52,7 +53,6 @@
   margin: 10px;
   width: 50%;
 }
-
 
 .window {
   height: 100vh;
@@ -78,37 +78,43 @@
   font-size: 16px;
   padding: 0 6px;
   padding-left: 12px;
-  &:focus{
-      border: 3px solid #5551ff;
-      transform: translateY(-2px);
-  }
-  &:hover{
+  &:focus {
+    border: 3px solid #5551ff;
     transform: translateY(-2px);
-} 
+  }
+  &:hover {
+    transform: translateY(-2px);
+  }
 }
 
 .table-head {
   height: 50px;
-  
-  
 }
 
 .btn {
   font-size: 20px;
   margin: 0 5px;
-  cursor: pointer;  
+  cursor: pointer;
 }
 
-a:link { text-decoration: none; }
+a:link {
+  text-decoration: none;
+}
 
-a:visited { text-decoration: none; }
+a:visited {
+  text-decoration: none;
+}
 
-a:hover { text-decoration: none; }
+a:hover {
+  text-decoration: none;
+}
 
-a:active { text-decoration: none; }
+a:active {
+  text-decoration: none;
+}
 
 th {
-  svg{
+  svg {
     margin: 0 10px;
     cursor: pointer;
     margin-bottom: -2px;
