@@ -1,86 +1,31 @@
-.app__modalView {
+.viewModal_container {
+  padding: 30px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  @media screen and (max-width: 1250px) {
+    grid-template-columns: 1fr;
+  }
+}
+.viewModal_picturesContainer {
   display: flex;
   flex-direction: column;
-  padding: 30px;
-  .tall-pic {
-    background-color: black;
-    img {
-      width: auto;
-      height: 80vh;
-    }
-  }
-}
-
-.app__modalView-main {
-  width: 500px;
-  background-color: aqua;
-
-}
-
-.modal-conatainer {
-  font-size: 20px;
-  font-weight: 700;
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1.25fr;
-  grid-template-rows: 1fr 1fr 1fr 1fr;
-  gap: 20px;
-  width: 1000px;
-  height: 500px;
-  .grid-item {
-    background-color: #f6f6f6;
-    border: 3px solid #000;
-    border-radius: 5px;
-  }
-  .grid-item-1 {
-    background-color: #000;
-  }
-}
-
-.grid-item-1 {
-  grid-column-start: span 4;
-}
-
-.grid-item-2 {
-  grid-row-start: span 3;
-}
-
-.grid-item-3 {
-  grid-column-start: span 2;
-  display: flex;
-  padding-right: 20px;
-  justify-content: start;
-  align-items: center;
-}
-.grid-item-4 {
-  grid-row-start: span 2;
-}
-.grid-item-9 {
-  background-color: #000;
-  video {
-    background-color: #000;
-  }
-}
-
-.modal-buttons {
-  margin-top: 10px; 
-  display: flex;
   justify-content: center;
-  button {
-    margin: 0 10px;
-    display: inline-block;
-    outline: 0;
-    border: 0;
-    cursor: pointer;
-    background: #000000;
-    color: #FFFFFF;
-    border-radius: 8px;
-    padding: 14px 24px 16px;
-    font-size: 18px;
-    font-weight: 700;
-    line-height: 1;
-    transition: transform 200ms,background 200ms;
-    &:hover{
-        transform: translateY(-2px);
-    }
+  align-items: center;
+  @media screen and (max-width: 1250px) {
+    display: none;
   }
+}
+.modal-row {
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+}
+.user-overview_image-container-modal {
+  img {
+    width: 120px;
+    height: 120px;
+  }
+}
+.user-overview_video-container-modal {
+  width: 90%;
 }

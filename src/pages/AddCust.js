@@ -5,6 +5,7 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import countries from "../utils/countries";
 import { AiOutlinePlus } from "react-icons/ai";
+import { RiVideoUploadFill } from "react-icons/ri";
 import {
   TextField,
   InputAdornment,
@@ -15,7 +16,7 @@ import {
 } from "@mui/material";
 import RadioInputs from "../components/Controls/RadioInputs";
 import SelectInput from "../components/Controls/SelectInput";
-import { v4 as uuidv4 } from "uuid";
+import LinearProgress from "@mui/material/LinearProgress";
 
 const initialState = {
   name: "",
@@ -65,39 +66,17 @@ const genderItems = [
 
 const AddCust = () => {
   // file variables
-  const [image1, setImage1] = useState(null);
-  const [image2, setImage2] = useState(null);
-  const [image3, setImage3] = useState(null);
-  const [image4, setImage4] = useState(null);
-  const [image5, setImage5] = useState(null);
-  const [video, setVideo] = useState(null);
-
-  const [file1Name, setFile1Name] = useState("");
-  const [file2Name, setFile2Name] = useState("");
-  const [file3Name, setFile3Name] = useState("");
-  const [file4Name, setFile4Name] = useState("");
-  const [file5Name, setFile5Name] = useState("");
-  const [videoName, setVideoName] = useState(null);
-
+  const postfix = {
+    image1: "1",
+    image2: "2",
+    image3: "3",
+    image4: "4",
+    image5: "5",
+    video: "video",
+  };
   const [img1Prev, setImg1Prev] = useState(null);
-  const [img2Prev, setImg2Prev] = useState(null);
-  const [img3Prev, setImg3Prev] = useState(null);
-  const [img4Prev, setImg4Prev] = useState(null);
-  const [img5Prev, setImg5Prev] = useState(null);
-  const [videoPrev, setVideoPrev] = useState(null);
-
-  const [selectedRole, setSelectedRole] = useState("");
-
-  const [selectedTags, setSelectedTags] = useState([]);
-
   const [state, setState] = useState(initialState);
-
-  const [loadedData1, setLoadedData1] = useState(false);
-  const [loadedData2, setLoadedData2] = useState(false);
-  const [loadedData3, setLoadedData3] = useState(false);
-  const [loadedData4, setLoadedData4] = useState(false);
-  const [loadedData5, setLoadedData5] = useState(false);
-  const [loadedData6, setLoadedData6] = useState(false);
+  const [loadedData1, setLoadedData1] = useState(true);
 
   const {
     name,
@@ -122,111 +101,28 @@ const AddCust = () => {
     imgUrl,
     role,
     tags,
-    imgName1,
-    imgName2,
-    imgName3,
-    imgName4,
-    imgName5,
     mediaKey,
   } = state;
 
   const navigate = useNavigate();
   const { id } = useParams();
-
-  const [file, setFile] = useState(null);
-  const [progress, setProgress] = useState(null);
-  const [isSubmit, setIsSubmit] = useState(null);
   const [mediaUrl, setMediaUrl] = useState("");
 
   useEffect(() => {
-    setMediaUrl(Date.now());
-  }, []);
-
-  useEffect(() => {
     console.log("state", state);
-    //console.log(state.mediaKey);
-    //console.log(state.mediaKey);
   }, [state]);
 
   useEffect(() => {
     axios.get(`/api/get/${id}`).then((resp) => {
       setState({ ...resp.data[0] });
-      //console.log("data", resp.data);
-      setFile1Name(state.imgName1);
-      setFile2Name(state.imgName2);
-      setFile3Name(state.imgName3);
-      setFile4Name(state.imgName4);
-      setFile5Name(state.imgName5);
-      setVideoName(state.videoName);
-      //console.log("images",file1Name,file2Name,file3Name,file4Name,file5Name,videoName)
     });
+    if (!id) {
+      setMediaUrl(Date.now());
+    }
   }, [id]);
-
-  useEffect(() => {
-    setSelectedTags(selectedTags);
-    setState({ ...state, ["tags"]: selectedTags.toString() });
-    //console.log("state", selectedTags)
-  }, [selectedTags]);
-
-  const uploadImagesToServer = async () => {
-    if (image1) {
-      // console.log(image1.getAll());
-      console.log(image1.values);
-      const res1 = await axios
-        .post("/image-upload", image1)
-        .finally(() => setLoadedData1(true));
-      console.log(res1);
-      setFile1Name(res1.data);
-    } else {
-      setFile1Name(state.imgName1);
-    }
-    if (image2) {
-      const res2 = await axios
-        .post("/image-upload", image2)
-        .finally(() => setLoadedData2(true));
-      setFile2Name(res2.data);
-    } else {
-      setFile2Name(state.imgName2);
-    }
-    if (image3) {
-      const res3 = await axios
-        .post("/image-upload", image3)
-        .finally(() => setLoadedData3(true));
-      setFile3Name(res3.data);
-    } else {
-      setFile3Name(state.imgName3);
-    }
-    if (image4) {
-      const res4 = await axios
-        .post("/image-upload", image4)
-        .finally(() => setLoadedData4(true));
-      setFile4Name(res4.data);
-    } else {
-      setFile4Name(state.imgName4);
-    }
-    if (image5) {
-      const res5 = await axios
-        .post("/image-upload", image5)
-        .finally(() => setLoadedData5(true));
-      setFile5Name(res5.data);
-    } else {
-      setFile5Name(state.imgName5);
-    }
-  };
-  const uploadVideosToServer = async () => {
-    if (video) {
-      const res6 = await axios
-        .post("/image-upload", video)
-        .finally(() => setLoadedData6(true));
-      setVideoName(res6.data);
-    } else {
-      setVideoName(state.videoName);
-    }
-  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     if (!name || !email || !contact) {
       toast.error("please fill everything");
     } else {
@@ -256,12 +152,6 @@ const AddCust = () => {
             imgUrl,
             role,
             tags,
-            file1Name,
-            file2Name,
-            file3Name,
-            file4Name,
-            file5Name,
-            videoName,
             mediaUrl,
           })
           .then(() => {
@@ -287,19 +177,12 @@ const AddCust = () => {
               imgUrl: "",
               role: "",
               tags: "",
-              file1Name: "",
-              file2Name: "",
-              file3Name: "",
-              file4Name: "",
-              file5Name: "",
             });
           })
           .catch((err) => toast.error(err.response.data));
         toast.success(`${name} was susccefuly added`);
-        setIsSubmit(true);
-        //navigate('/home')
+        navigate("/home");
       } else {
-        //console.log("file 1 final",file1Name)
         axios
           .put(`/api/update/${id}`, {
             name,
@@ -325,12 +208,6 @@ const AddCust = () => {
             imgUrl,
             role,
             tags,
-            file1Name,
-            file2Name,
-            file3Name,
-            file4Name,
-            file5Name,
-            videoName,
           })
           .then(() => {
             setState({
@@ -371,38 +248,29 @@ const AddCust = () => {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    console.log(e);
-    console.log("name", name, "value", value);
     setState({ ...state, [name]: value });
-  };
-
-  const handleCountryInputChange = (country) => {
-    //console.log(country);
-    setState({ ...state, ["country"]: country.label });
-  };
-
-  const handleSelectChange = (e) => {
-    //console.log(e.target.value)
-    setSelectedRole(e.target.value);
-    setState({ ...state, ["role"]: e.target.value });
   };
 
   const handleInputLangChange = (e, data) => {
     setState({ ...state, ["languages"]: data.toString() });
   };
+
   const handleInputTalentsChange = (e, data) => {
     setState({ ...state, ["talents"]: data.toString() });
   };
   const handleInputTagsChange = (e, data) => {
     setState({ ...state, ["tags"]: data.toString() });
   };
+
   const handleInputCountryChange = (e, data) => {
     setState({ ...state, ["country"]: data });
   };
 
   //images functions
-  const handleImageInputChange1 = (e) => {
+  const handleImageInputChange1 = async (e) => {
     e.preventDefault();
+    setLoadedData1(false);
+    console.log("img postfix", postfix[e.target.name]);
     if (e.target.files && e.target.files[0]) {
       let reader = new FileReader();
       let file = e.target.files[0];
@@ -412,133 +280,60 @@ const AddCust = () => {
       reader.readAsDataURL(file);
     }
     const formData = new FormData();
-    console.log("first", e.target.files[0]);
-    console.log("asddas", `${state.mediaKey}_1`);
     formData.append(
       "my-image-file",
       e.target.files[0],
-      e.target.files[0].name + uuidv4()
+      mediaUrl
+        ? `${mediaUrl}_${postfix[e.target.name]}`
+        : `${state.mediaKey}_${postfix[e.target.name]}`
     );
-    //formData.append("hey", 1);
-    setImage1(formData);
+    console.log(`${state.mediaKey}_${postfix[e.target.name]}`);
+    const res1 = await axios
+      .post("/image-upload", formData)
+      .finally(() => setLoadedData1(true));
+    console.log(res1);
   };
-  const handleImageInputChange2 = (e) => {
+  const handleVideoInputChange = async (e) => {
     e.preventDefault();
+    setLoadedData1(false);
     if (e.target.files && e.target.files[0]) {
       let reader = new FileReader();
       let file = e.target.files[0];
       reader.onloadend = () => {
-        setImg2Prev(reader.result);
+        setImg1Prev(reader.result);
       };
       reader.readAsDataURL(file);
     }
     const formData = new FormData();
-    formData.append("my-image-file", e.target.files[0], id);
-    console.log("2", e.target.files[0].name);
-    setImage2(formData);
-  };
-  const handleImageInputChange3 = (e) => {
-    e.preventDefault();
-    if (e.target.files && e.target.files[0]) {
-      let reader = new FileReader();
-      let file = e.target.files[0];
-      reader.onloadend = () => {
-        setImg3Prev(reader.result);
-      };
-      reader.readAsDataURL(file);
-    }
-    const formData = new FormData();
-    formData.append("my-image-file", e.target.files[0], e.target.files[0].name);
-    console.log("3", e.target.files[0].name);
-    setImage3(formData);
-  };
-  const handleImageInputChange4 = (e) => {
-    e.preventDefault();
-    if (e.target.files && e.target.files[0]) {
-      let reader = new FileReader();
-      let file = e.target.files[0];
-      reader.onloadend = () => {
-        setImg4Prev(reader.result);
-      };
-      reader.readAsDataURL(file);
-    }
-    const formData = new FormData();
-    formData.append("my-image-file", e.target.files[0], e.target.files[0].name);
-    console.log("4", e.target.files[0].name);
-    setImage4(formData);
-  };
-  const handleImageInputChange5 = (e) => {
-    if (e.target.files && e.target.files[0]) {
-      let reader1 = new FileReader();
-      let file = e.target.files[0];
-      reader1.onloadend = () => {
-        setImg5Prev(reader1.result);
-      };
-      reader1.readAsDataURL(file);
-    }
-    const formData = new FormData();
-    formData.append("my-image-file", e.target.files[0], e.target.files[0].name);
-    console.log("5", e.target.files[0].name);
-    setImage5(formData);
-  };
-  const handleVideoInputChange = (e) => {
-    if (e.target.files && e.target.files[0]) {
-      let reader1 = new FileReader();
-      let file = e.target.files[0];
-      reader1.onloadend = () => {
-        setVideoPrev(reader1.result);
-      };
-      reader1.readAsDataURL(file);
-    }
-    const formData = new FormData();
-    formData.append("my-image-file", e.target.files[0], e.target.files[0].name);
-    setVideo(formData);
-    //console.log("video prev",videoPrev)
+    formData.append(
+      "my-video-file",
+      e.target.files[0],
+      mediaUrl ? `${mediaUrl}_video` : `${state.mediaKey}_video`
+    );
+    const res1 = await axios
+      .post("/video-upload", formData)
+      .finally(() => setLoadedData1(true));
+    console.log(res1);
   };
 
-  function isRequire(stateImage, prevImage) {
-    //console.log("prev image",prevImage)
-    if (stateImage) {
-      if (prevImage) {
-        return prevImage;
-      } else {
-        return `${process.env.REACT_APP_SERVER_URL}public/${stateImage?.replace(
-          / /g,
-          "%20"
-        )}`;
-      }
-    } else {
-      if (prevImage) {
-        return prevImage;
-      } else {
-        // console.log(`${process.env.REACT_APP_SERVER_URL}public/${stateImage}`);
-        return `${process.env.REACT_APP_SERVER_URL}public/${stateImage?.replace(
-          / /g,
-          "%20"
-        )}`;
-      }
-    }
+  function isRequire(name) {
+    return (
+      `${process.env.REACT_APP_SERVER_URL}public/${
+        mediaUrl ? mediaUrl : mediaKey
+      }_${postfix[name]}.png?` + new Date().getTime()
+    );
   }
-  function isRequireVid(stateVideo, prevVideo) {
-    if (stateVideo) {
-      if (prevVideo) {
-        return prevVideo;
-      } else {
-        return `../uploaded_images/${stateVideo}`;
-      }
-    } else {
-      if (prevVideo) {
-        return prevVideo;
-      } else {
-        return "";
-      }
-    }
+  function isRequireVideo() {
+    return (
+      `${process.env.REACT_APP_SERVER_URL}public/${
+        mediaUrl ? mediaUrl : mediaKey
+      }_video.mp4?` + new Date().getTime()
+    );
   }
 
   return (
     <div className="app__add" dir="rtl">
       <h1>اضف كاست</h1>
-      {state.mediaKey + "osdf"}
       <form className="app__add-form" onSubmit={handleSubmit} id="a-form">
         <div className="app__add-box">
           <div className="formField">
@@ -689,13 +484,15 @@ const AddCust = () => {
                 <AiOutlinePlus
                   className="plus-sign"
                   style={{
-                    backgroundImage: `url(${isRequire(
-                      state.imgName1,
-                      img1Prev
-                    )})`,
+                    backgroundImage: "url(" + isRequire("image1") + ")",
                     backgroundPosition: "center",
                   }}
                 />
+                {console.log(
+                  `${process.env.REACT_APP_SERVER_URL}public/${
+                    mediaUrl ? mediaUrl : mediaKey
+                  }_1.png`
+                )}
               </label>
               <input
                 type="file"
@@ -705,7 +502,6 @@ const AddCust = () => {
                 onChange={handleImageInputChange1}
                 id="img1"
               />
-              dsf
             </div>
 
             <div className="image-upload-container ">
@@ -713,10 +509,7 @@ const AddCust = () => {
                 <AiOutlinePlus
                   className="plus-sign"
                   style={{
-                    backgroundImage: `url(${isRequire(
-                      state.imgName2,
-                      img2Prev
-                    )})`,
+                    backgroundImage: "url(" + isRequire("image2") + ")",
                     backgroundPosition: "center",
                   }}
                 />
@@ -726,7 +519,7 @@ const AddCust = () => {
                 name="image2"
                 accept="image/*"
                 multiple={false}
-                onChange={handleImageInputChange2}
+                onChange={handleImageInputChange1}
                 id="img2"
               />
             </div>
@@ -735,10 +528,7 @@ const AddCust = () => {
                 <AiOutlinePlus
                   className="plus-sign"
                   style={{
-                    backgroundImage: `url(${isRequire(
-                      state.imgName3,
-                      img3Prev
-                    )})`,
+                    backgroundImage: "url(" + isRequire("image3") + ")",
                     backgroundPosition: "center",
                   }}
                 />
@@ -748,8 +538,8 @@ const AddCust = () => {
                 name="image3"
                 accept="image/*"
                 multiple={false}
-                onChange={handleImageInputChange3}
                 id="img3"
+                onChange={handleImageInputChange1}
               />
             </div>
 
@@ -758,10 +548,7 @@ const AddCust = () => {
                 <AiOutlinePlus
                   className="plus-sign"
                   style={{
-                    backgroundImage: `url(${isRequire(
-                      state.imgName4,
-                      img4Prev
-                    )})`,
+                    backgroundImage: "url(" + isRequire("image4") + ")",
                     backgroundPosition: "center",
                   }}
                 />
@@ -771,8 +558,8 @@ const AddCust = () => {
                 name="image4"
                 accept="image/*"
                 multiple={false}
-                onChange={handleImageInputChange4}
                 id="img4"
+                onChange={handleImageInputChange1}
               />
             </div>
 
@@ -781,10 +568,7 @@ const AddCust = () => {
                 <AiOutlinePlus
                   className="plus-sign"
                   style={{
-                    backgroundImage: `url(${isRequire(
-                      state.imgName5,
-                      img5Prev
-                    )})`,
+                    backgroundImage: "url(" + isRequire("image5") + ")",
                     backgroundPosition: "center",
                   }}
                 />
@@ -794,17 +578,10 @@ const AddCust = () => {
                 name="image5"
                 accept="image/*"
                 multiple={false}
-                onChange={handleImageInputChange5}
                 id="img5"
+                onChange={handleImageInputChange1}
               />
             </div>
-            <button
-              type="button"
-              onClick={uploadImagesToServer}
-              className="submit-btn"
-            >
-              رفع الصور
-            </button>
           </div>
         </div>
         <div className="app__add-box">
@@ -852,7 +629,7 @@ const AddCust = () => {
               multiple
               id="languages"
               name="languages"
-              value={languages?.split(",") || [""]}
+              value={languages?.split(",") || []}
               options={langaugesOptions.map((option) => option.label)}
               freeSolo
               onChange={handleInputLangChange}
@@ -873,6 +650,27 @@ const AddCust = () => {
 
           <div className="formField">
             <label htmlFor="tags">علامات البحث</label>
+            <Autocomplete
+              multiple
+              id="tags"
+              name="tags"
+              value={tags?.split(",") || []}
+              options={langaugesOptions.map((option) => option.label)}
+              freeSolo
+              onChange={handleInputTagsChange}
+              renderTags={(value, getTagProps) =>
+                value.map((option, index) => (
+                  <Chip
+                    label={option}
+                    {...getTagProps({ index })}
+                    style={{ width: "100px" }}
+                  />
+                ))
+              }
+              renderInput={(params) => (
+                <TextField {...params} placeholder="tags" />
+              )}
+            />
           </div>
 
           <div className="formField">
@@ -944,44 +742,54 @@ const AddCust = () => {
             value={first_address || ""}
             onChange={handleInputChange}
           />
-          <label htmlFor="vid">رفع فيديو</label>
-          <input
-            type="file"
-            name="vid"
-            accept="video/mp4,video/x-m4v,video/*"
-            multiple={false}
-            onChange={handleVideoInputChange}
-            id="vid"
-            className="video-upload-input"
-          />
-          {/*<video controls width="100%">
-            <source src={videoPrev} type="video/mp4" />
-            Sorry, your browser doesn't support embedded videos.
-        </video>*/}
-          <p> الفيديو الحالي{" " + state.videoName}</p>
-          <button
-            type="button"
-            onClick={uploadVideosToServer}
-            className="submit-btn"
-          >
-            رفع الفيديو
-          </button>
-          <p>
-            *الرجاء النقر على رفع الصور والفيديو حتى لو لم يتم تعديلها لحفظ
-            الملفات السابقة
-          </p>
+          <div className="formField">
+            <label htmlFor="vid">رفع فيديو</label>
+            <button
+              className="back-btn"
+              type="button"
+              style={{ width: "150px" }}
+            >
+              <label htmlFor="vid" style={{ fontWeight: "800" }}>
+                تحميل الفيديو{" "}
+                <RiVideoUploadFill style={{ marginRight: "5px" }} />
+              </label>
+            </button>
+
+            <input
+              type="file"
+              name="video"
+              accept="video/mp4"
+              style={{ display: "none" }}
+              multiple={false}
+              onChange={handleVideoInputChange}
+              id="vid"
+              className="video-upload-input"
+            />
+          </div>
+        </div>
+
+        <div className="loadingBar">
+          {!loadedData1 && <LinearProgress color="inherit" />}
         </div>
       </form>
-      <input
-        type="submit"
-        form="a-form"
-        value={id ? "تحديث" : "اضافة كاست"}
-        className="submit-btn"
-      />
-      <Link to="/home">
-        <input type="button" value="العودة" className="back-btn" />
-      </Link>
-      <img src={"localhost:5000/sushi.jpg"} width="100px" height="100px" />
+      <div className="footer_buttons">
+        <input
+          type="submit"
+          form="a-form"
+          disabled={!loadedData1}
+          value={id ? "تحديث" : "اضافة كاست"}
+          className="submit-btn"
+          style={{ marginLeft: "10px" }}
+        />
+        <Link to="/home">
+          <input
+            type="button"
+            value="العودة"
+            className="back-btn"
+            style={{ marginRight: "10px" }}
+          />
+        </Link>
+      </div>
     </div>
   );
 };

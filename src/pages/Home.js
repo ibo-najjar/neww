@@ -14,16 +14,11 @@ const Home = () => {
   const [order, setOrder] = useState("ASC");
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState("");
-  const navigate = useNavigate();
 
   const loadData = async () => {
     const response = await axios.get(`/api/get?q=${query}`);
     setData(response.data);
   };
-
-  useEffect(() => {
-    console.log(category);
-  }, [category]);
 
   useEffect(() => {
     loadData();
@@ -34,7 +29,7 @@ const Home = () => {
       window.confirm(`are you sure that u want to delete cutomer with id ${id}`)
     ) {
       axios.delete(`/api/remove/${id}`);
-      console.log("deleted");
+      //console.log("deleted");
       toast.success("cutsomer deleted succesfully");
       setTimeout(() => loadData(), 500);
     }

@@ -15,13 +15,11 @@ import { AiOutlineClose } from "react-icons/ai";
 import ViewModal from "../components/ViewModal/ViewModal";
 import noPic from "../assets/nopic.png";
 import ArabicNormalize from "../utils/ArabicNormalize";
-import Select from "react-select";
 import countries from "../utils/countries";
 import TopNav from "../components/TopNav/TopNav";
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
 import Slider from "@mui/material/Slider";
-import Typography from "@mui/material/Typography";
 
 const initialState = {
   name: "",
@@ -72,8 +70,6 @@ const genderOptions = [
   { value: "انثى", label: "انثى" },
 ];
 
-const marks = [0, 100];
-
 const customStyles = {
   content: {
     top: "50%",
@@ -92,22 +88,12 @@ const Table = () => {
   const [ordersToDelete, setOrdersToDelete] = useState([]);
   const [newSelected, setNewSelected] = useState([]);
   const gridRef = useRef();
-  const gridRef2 = useRef();
   const [state, setState] = useState(initialState);
 
   const [orderState, setOrderState] = useState(initOrderState);
-  const { order_name, order_key, casts_ordered } = orderState;
   const { id } = useParams();
 
-  const [loaded, setLoaded] = useState(false);
-
-  //const [heightRange,setHeightRange] = useState( {min: 0, max:200});
-
-  const [value, setValue] = useState([1000, 4333]);
   const [query, setQuery] = useState("");
-
-  const [searchQ, setSearchQ] = useState({ name: "" });
-  const navigate = useNavigate();
 
   //Modal
   const [modalIsOpen, setModalIsOpen] = useState(false);
@@ -119,44 +105,28 @@ const Table = () => {
     //console.log(data)
   };
 
-  const updateOrder = async () => {
-    await axios(`/api/update-order/${id}/${orderState.order_key}`);
-  };
-
   useEffect(() => {
     loadData();
     //console.log(orderId)
   }, [query]);
   useEffect(() => {
-    console.log(state);
+    //console.log(state);
   }, [state]);
 
   //reloads on refresh
   async function getSelectedCasts() {
     const resp = await axios.get(`/api/get-orders/${id}`);
     setOrderState({ ...resp.data[0] });
-    //console.log("orderState", orderState);
-    //console.log("selcted",selected)
   }
-  ///api/get-orders/:id
-  useEffect(() => {
-    //console.log("id",id)
-    getSelectedCasts();
-    setNewSelected(orderState.casts_ordered);
-    //setLoaded(true)
-  }, [id]);
 
   useEffect(() => {
-    console.log("change in order state", orderState);
-    if (orderState.casts_ordered?.length) {
-      setLoaded(true);
-      console.log("loaded", orderState);
-    }
-  }, [orderState]);
+    getSelectedCasts();
+    setNewSelected(orderState.casts_ordered);
+  }, [id]);
 
   const handleOrderNameChange = (e) => {
     setOrderState({ ...orderState, ["order_name"]: e.target.value });
-    console.log(orderState);
+    //console.log(orderState);
   };
 
   const [columnDefs, setColumnDefs] = useState([
@@ -238,7 +208,7 @@ const Table = () => {
       toast.error("please choose order name");
     } else {
       if (!id) {
-        console.log("id", id);
+        //console.log("id", id);
         axios
           .post("/api/post-order", {
             order_name,
@@ -279,10 +249,6 @@ const Table = () => {
     setModalIsOpen(false);
   }
 
-  const onValueChange = (values) => {
-    setValue(values);
-  };
-
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setState({ ...state, [name]: value });
@@ -309,7 +275,7 @@ const Table = () => {
     setState({ ...state, ["skin_color"]: val });
   };
   const handleRangeChange = (e, val) => {
-    console.log(val, e);
+    //console.log(val, e);
     setState({ ...state, [e.target.name]: val });
   };
 
@@ -320,7 +286,7 @@ const Table = () => {
   });
 
   const wageLabelFormat = (e) => {
-    console.log("yooo", e);
+    //console.log("yooo", e);
     return formatter.format(e);
   };
 
@@ -334,7 +300,7 @@ const Table = () => {
   }
 
   function search(rows) {
-    console.log(rows);
+    //console.log(rows);
     try {
       return rows.filter(
         (row) =>
@@ -364,18 +330,23 @@ const Table = () => {
             .indexOf(state.full_time.toLowerCase()) > -1 &&
           ArabicNormalize(isEmpty(row.country_address))
             .toLowerCase()
-            .indexOf(state.country_address.toLowerCase()) > -1 &&
+            .indexOf(ArabicNormalize(state.country_address).toLowerCase()) >
+            -1 &&
           ArabicNormalize(isEmpty(row.city_address))
             .toLowerCase()
             .indexOf(state.city_address.toLowerCase()) > -1 &&
           ArabicNormalize(isEmpty(row.talents))
             .toLowerCase()
-            .indexOf(state.talents.toLowerCase()) > -1 &&
+            .indexOf(ArabicNormalize(state.talents).toLowerCase()) > -1 &&
           ArabicNormalize(isEmpty(row.tags))
             .toLowerCase()
             .indexOf(ArabicNormalize(state.tags).toLowerCase()) > -1 &&
-          row.gender.indexOf(state.gender) > -1 &&
-          row.skin_color.indexOf(state.skin_color) > -1
+          isEmpty(row.gender).toLowerCase().indexOf(state.gender) > -1 &&
+          isEmpty(row.skin_color).toLowerCase().indexOf(state.skin_color) >
+            -1 &&
+          ArabicNormalize(isEmpty(row.class_job))
+            .toLowerCase()
+            .indexOf(ArabicNormalize(state.class_job.toLowerCase())) > -1
       );
     } catch (err) {
       console.log("error", err);
@@ -393,26 +364,24 @@ const Table = () => {
       toast.error("please update selected changes before deleting");
       return;
     }
-    console.log("heyyy");
-    console.log(value.id);
     setOrderState({
       ...orderState,
       ["casts_ordered"]: orderState.casts_ordered.filter(
         (item) => item !== value.id
       ),
     });
-    console.log(orderState);
     toast.success(`${value.id} has been deleted from your order`);
   }
+
+  const handleResetAll = () => {
+    setState(initialState);
+  };
 
   return (
     <>
       <TopNav />
       <div className="app__home">
-        <div className="app__header">
-          <h1>CASTS OVERVIEW</h1>
-          <h4>hey</h4>
-        </div>
+        <div className="app__header"></div>
         <Nav />
         <div className="app__main" dir="rtl">
           <div className="search-box">
@@ -534,16 +503,7 @@ const Table = () => {
                   )}
                 />
               </div>
-              <div className="input-wrapper">
-                <label>علامات البحث</label>
-                <TextField
-                  id="tags-search"
-                  name="tags"
-                  type="search"
-                  fullWidth
-                  onChange={handleInputChange}
-                />
-              </div>
+
               <div className="input-wrapper">
                 <label>لون البشرة</label>
                 <Autocomplete
@@ -560,6 +520,16 @@ const Table = () => {
                       color="secondary"
                     />
                   )}
+                />
+              </div>
+              <div className="input-wrapper">
+                <label htmlFor="class_job-search">الصف / الوظيفة</label>
+                <TextField
+                  id="class_job-search"
+                  name="class_job"
+                  type="search"
+                  fullWidth
+                  onChange={handleInputChange}
                 />
               </div>
             </div>
@@ -621,6 +591,17 @@ const Table = () => {
                     color="secondary"
                   />
                 </div>
+                <div className="input-wrapper">
+                  <label>علامات البحث</label>
+                  <TextField
+                    id="tags-search"
+                    name="tags"
+                    type="search"
+                    fullWidth
+                    onChange={handleInputChange}
+                  />
+                </div>
+                <button onClick={handleResetAll}>reset</button>
               </div>
             </div>
           </div>

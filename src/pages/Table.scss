@@ -220,6 +220,7 @@
   }
   .search-box-ranges {
     padding: 20px;
+
     align-items: center;
     justify-content: center;
     @media screen and (max-width: 480px) {
@@ -236,6 +237,28 @@
     label {
       font-size: 15px;
       font-weight: 700;
+    }
+    button {
+      margin: 10px 10px;
+      display: inline-block;
+      outline: 0;
+      border: 0;
+      text-align: center;
+      cursor: pointer;
+      background: #000000;
+      color: #ffffff;
+      border-radius: 8px;
+      padding: 14px 24px 16px;
+      font-size: 18px;
+      font-weight: 700;
+      line-height: 1;
+      transition: transform 200ms, background 200ms;
+      &:hover {
+        transform: translateY(-2px);
+      }
+      @media screen and (max-width: 521px) {
+        font-size: 14px;
+      }
     }
   }
 }

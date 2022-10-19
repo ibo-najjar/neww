@@ -6,8 +6,13 @@ import { CgUserList } from "react-icons/cg";
 import { HiOutlineUserGroup, HiOutlineInformationCircle } from "react-icons/hi";
 import { Link } from "react-router-dom";
 import logo from "../../assets/logonv.png";
+import axios from "axios";
 
 const Nav = () => {
+  const handleLogout = async () => {
+    console.log("logout");
+    await axios.post("/logout"); //doesnt work
+  };
   return (
     <div className="app__nav">
       <div className="nav-logo">
@@ -42,17 +47,10 @@ const Nav = () => {
           </li>
         </Link>
 
-        <Link to="/about">
-          <li className="item">
-            <HiOutlineInformationCircle />
-            <h3>About</h3>
-          </li>
-        </Link>
-
         <Link to="/">
           <li className="item">
             <BiLogOutCircle />
-            <h3>logout</h3>
+            <h3 onClick={handleLogout}>logout</h3>
           </li>
         </Link>
       </ul>
