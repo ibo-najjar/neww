@@ -22,7 +22,7 @@ const theme = createTheme({
 });
 
 axios.defaults.baseURL = process.env.REACT_APP_SERVER_URL;
-//https://casts-server-wphs.vercel.app/
+
 function App() {
   return (
     <MuiThemeProvider theme={theme}>
